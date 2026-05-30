@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FinTrack — AI Finance Suite</title>
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/layout.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/pages.css">
+</head>
+<body>
+<div class="app">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="logo">
+      <div class="logo-icon">₿</div>
+      <div>
+        <div class="logo-text">FinTrack</div>
+        <div class="logo-sub">AI Finance Suite</div>
+      </div>
+    </div>
+    <nav>
+      <div class="nav-section">Overview</div>
+      <div class="nav-item active" onclick="go('dashboard',this)"><span class="ni">📊</span> Dashboard</div>
+      <div class="nav-item" onclick="go('transactions',this)"><span class="ni">💳</span> Transactions</div>
+      <div class="nav-item" onclick="go('budgets',this)"><span class="ni">🎯</span> Budgets</div>
+      <div class="nav-item" onclick="go('accounts',this)"><span class="ni">🏦</span> Accounts</div>
+      <div class="nav-section">AI &amp; Premium</div>
+      <div class="nav-item" onclick="go('ai',this)"><span class="ni">🤖</span> AI Advisor <span class="nbadge ai">AI</span></div>
+      <div class="nav-item" onclick="go('balancesheet',this)"><span class="ni">📋</span> Balance Sheet <span class="nbadge gold">PRO</span></div>
+      <div class="nav-item" onclick="go('reports',this)"><span class="ni">📈</span> Reports <span class="nbadge gold">PRO</span></div>
+      <div class="nav-section">Administration</div>
+      <div class="nav-item" onclick="go('admin',this)"><span class="ni">⚙️</span> Admin Panel <span class="nbadge">ADMIN</span></div>
+    </nav>
+    <div class="sidebar-user">
+      <div class="u-avatar">JD</div>
+      <div>
+        <div class="u-name">John Doe</div>
+        <div class="u-plan" id="plan-label">Free Plan</div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+    <div class="topbar">
+      <h1 id="page-title">Dashboard</h1>
+      <span id="free-badge" class="tbadge">⭐ Free Plan — Upgrade for full access</span>
+      <button class="btn btn-ghost" onclick="openM('addTx')">+ Add Transaction</button>
+      <button class="btn btn-gold" onclick="openM('upgrade')">⚡ Upgrade to Pro</button>
+    </div>
+
+    <div class="content">
+      <!-- Pages injected by JS -->
+      <div id="page-dashboard"  class="page active"></div>
+      <div id="page-transactions" class="page"></div>
+      <div id="page-budgets"      class="page"></div>
+      <div id="page-accounts"     class="page"></div>
+      <div id="page-ai"           class="page"></div>
+      <div id="page-balancesheet" class="page"></div>
+      <div id="page-reports"      class="page"></div>
+      <div id="page-admin"        class="page"></div>
+    </div>
+  </main>
+</div>
+
+<!-- Modals -->
+<div id="modals-root"></div>
+
+<!-- Toast -->
+<div class="toast" id="toast"><span id="t-icon"></span><span id="t-msg"></span></div>
+
+<!-- Scripts -->
+<script src="js/data.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/router.js"></script>
+<script src="js/modals.js"></script>
+<script src="pages/dashboard.js"></script>
+<script src="pages/transactions.js"></script>
+<script src="pages/budgets.js"></script>
+<script src="pages/accounts.js"></script>
+<script src="pages/ai-advisor.js"></script>
+<script src="pages/balance-sheet.js"></script>
+<script src="pages/reports.js"></script>
+<script src="pages/admin.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

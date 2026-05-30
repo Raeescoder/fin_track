@@ -1,0 +1,82 @@
+/* ============================================
+   base.css — CSS Variables, Reset, Typography
+   FinTrack AI Finance Suite
+   ============================================ */
+
+*,*::before,*::after { margin:0; padding:0; box-sizing:border-box; }
+
+:root {
+  /* Background layers */
+  --bg:    #0A0E1A;
+  --bg2:   #111827;
+  --bg3:   #1a2233;
+  --bg4:   #1e2a40;
+
+  /* Brand colors */
+  --accent:  #3B82F6;
+  --success: #10B981;
+  --warn:    #F59E0B;
+  --danger:  #EF4444;
+  --purple:  #8B5CF6;
+  --gold:    #F59E0B;
+  --gold2:   #FCD34D;
+
+  /* Text */
+  --text:  #F1F5F9;
+  --text2: #94A3B8;
+  --text3: #64748B;
+
+  /* Borders */
+  --border:  #1e2a40;
+  --border2: #2d3a52;
+
+  /* Cards */
+  --card:  #111827;
+  --card2: #1a2233;
+
+  /* Radius */
+  --r:  12px;
+  --r2:  8px;
+  --r3:  6px;
+
+  /* Font */
+  --font: 'Segoe UI', system-ui, -apple-system, sans-serif;
+}
+
+html, body {
+  height: 100%;
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  overflow: hidden;
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+
+/* Color helpers */
+.green  { color: var(--success); }
+.red    { color: var(--danger);  }
+.amber  { color: var(--warn);    }
+.blue   { color: var(--accent);  }
+.purple { color: var(--purple);  }
+.gold   { color: var(--gold);    }
+
+/* Utility */
+.flex   { display: flex; }
+.ic     { align-items: center; }
+.jb     { justify-content: space-between; }
+.gap2   { gap: 8px; }
+.gap3   { gap: 12px; }
+.mb14   { margin-bottom: 14px; }
+.mt14   { margin-top: 14px; }
+.spacer { height: 14px; }
+.tr     { text-align: right; }
+.subtitle { font-size: 12px; color: var(--text3); margin-top: 3px; }
+.sec-title { font-size: 15px; font-weight: 600; margin-bottom: 14px; }
+.div { height: 1px; background: var(--border); margin: 16px 0; }
