@@ -1,26 +1,44 @@
-/* ============================================
-   layout.css — App Shell, Sidebar, Topbar
+/* ================================================================
+   layout.css — App Shell, Sidebar, Topbar & Grid
    FinTrack AI Finance Suite
-   ============================================ */
+   ================================================================
+   Defines the top-level structure of the app:
+   - .app          → flex container (sidebar + main)
+   - .sidebar      → fixed-width left navigation panel
+   - .main         → flex column (topbar + scrollable content)
+   - .content      → scrollable page area
+   - .page         → individual page container (hidden by default)
+   - Grid helpers  → .grid-2 / .grid-3 / .grid-4
+   ================================================================ */
 
-/* ---- App Shell ---- */
+
+/* ── App Shell ───────────────────────────────────────────────────
+   Root flex container that fills the entire viewport height.
+   Two children: .sidebar (fixed) and .main (flexible).
+   ──────────────────────────────────────────────────────────────── */
 .app {
   display: flex;
   height: 100vh;
-  overflow: hidden;
+  overflow: hidden;   /* Children handle their own overflow */
 }
 
-/* ---- Sidebar ---- */
+
+/* ================================================================
+   SIDEBAR
+   ================================================================ */
+
+/* Sidebar container — fixed width, full height, dark background */
 .sidebar {
   width: 224px;
   background: var(--bg2);
   border-right: 1px solid var(--border);
   display: flex;
-  flex-direction: column;
-  flex-shrink: 0;
+  flex-direction: column;   /* Logo → nav (flex-1) → user info */
+  flex-shrink: 0;           /* Never shrink below 224px */
   height: 100vh;
 }
 
+/* ── Logo Area ── */
 .logo {
   padding: 18px 20px;
   border-bottom: 1px solid var(--border);
@@ -28,30 +46,42 @@
   align-items: center;
   gap: 10px;
 }
+
+/* Gradient icon square beside the logo text */
 .logo-icon {
-  width: 34px; height: 34px;
+  width: 34px;
+  height: 34px;
   background: linear-gradient(135deg, #3B82F6, #10B981);
   border-radius: 8px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 16px; font-weight: 700; color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
 }
+
 .logo-text { font-size: 15px; font-weight: 600; }
 .logo-sub  { font-size: 10px; color: var(--text3); letter-spacing: .5px; text-transform: uppercase; }
 
+/* ── Navigation ── */
 nav {
-  flex: 1;
+  flex: 1;              /* Takes all remaining height between logo and user */
   padding: 10px 0;
-  overflow-y: auto;
+  overflow-y: auto;     /* Scroll if many nav items */
 }
 
+/* Section label above a group of nav items */
 .nav-section {
   padding: 10px 16px 4px;
-  font-size: 10px; font-weight: 600;
+  font-size: 10px;
+  font-weight: 600;
   color: var(--text3);
   text-transform: uppercase;
   letter-spacing: .8px;
 }
 
+/* Individual clickable nav item */
 .nav-item {
   display: flex;
   align-items: center;
@@ -59,27 +89,36 @@ nav {
   padding: 9px 16px;
   cursor: pointer;
   border-radius: var(--r3);
-  margin: 1px 8px;
+  margin: 1px 8px;        /* Small horizontal margin for rounded corners to show */
   font-size: 13px;
   color: var(--text2);
   transition: all .15s;
-  user-select: none;
+  user-select: none;      /* Prevent text selection on click */
 }
-.nav-item:hover  { background: var(--bg3); color: var(--text); }
-.nav-item.active { background: rgba(59,130,246,.15); color: var(--accent); }
-.nav-item .ni    { font-size: 16px; width: 18px; text-align: center; }
 
+/* Hover state */
+.nav-item:hover  { background: var(--bg3); color: var(--text); }
+
+/* Active (current page) state — set by router.js */
+.nav-item.active { background: rgba(59,130,246,.15); color: var(--accent); }
+
+/* Emoji icon inside nav item */
+.nav-item .ni { font-size: 16px; width: 18px; text-align: center; }
+
+/* Small badge on right side of nav item (AI / PRO / ADMIN) */
 .nbadge {
   margin-left: auto;
   background: var(--accent);
   color: #fff;
-  font-size: 10px; font-weight: 600;
+  font-size: 10px;
+  font-weight: 600;
   padding: 1px 6px;
   border-radius: 10px;
 }
-.nbadge.gold { background: var(--gold); color: #111; }
-.nbadge.ai   { background: linear-gradient(135deg, #8B5CF6, #3B82F6); color: #fff; }
+.nbadge.gold { background: var(--gold); color: #111; }   /* Pro feature */
+.nbadge.ai   { background: linear-gradient(135deg, #8B5CF6, #3B82F6); color: #fff; }  /* AI feature */
 
+/* ── Sidebar User Info (bottom) ── */
 .sidebar-user {
   padding: 12px 16px;
   border-top: 1px solid var(--border);
@@ -87,25 +126,41 @@ nav {
   align-items: center;
   gap: 10px;
 }
+
+/* Initials avatar circle */
 .u-avatar {
-  width: 32px; height: 32px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
   background: linear-gradient(135deg, #3B82F6, #8B5CF6);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 12px; font-weight: 700; color: #fff; flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  color: #fff;
+  flex-shrink: 0;
 }
+
 .u-name { font-size: 12px; font-weight: 500; }
+/* plan-label text is updated dynamically by modals.js on Pro upgrade */
 .u-plan { font-size: 10px; color: var(--gold); font-weight: 500; }
 
-/* ---- Main ---- */
+
+/* ================================================================
+   MAIN CONTENT AREA
+   ================================================================ */
+
+/* Main wrapper — takes remaining width beside sidebar */
 .main {
   flex: 1;
   display: flex;
-  flex-direction: column;
-  min-width: 0;
+  flex-direction: column;   /* topbar on top, content below */
+  min-width: 0;             /* Prevent flexbox overflow */
   overflow: hidden;
 }
 
+/* ── Top Bar ── */
 .topbar {
   background: var(--bg2);
   border-bottom: 1px solid var(--border);
@@ -113,31 +168,68 @@ nav {
   display: flex;
   align-items: center;
   gap: 12px;
-  flex-shrink: 0;
+  flex-shrink: 0;     /* Never shrink; always visible */
 }
+
+/* Page title — updated by router.js on navigation */
 .topbar h1 { font-size: 17px; font-weight: 600; flex: 1; }
+
+/* "Free Plan" badge shown until user upgrades */
 .tbadge {
   background: rgba(245,158,11,.15);
   color: var(--gold);
   border: 1px solid rgba(245,158,11,.3);
   border-radius: 20px;
   padding: 3px 10px;
-  font-size: 11px; font-weight: 600;
+  font-size: 11px;
+  font-weight: 600;
 }
 
-/* ---- Content ---- */
+/* ── Scrollable Content Area ── */
 .content {
   flex: 1;
-  overflow-y: auto;
+  overflow-y: auto;   /* This is the only scroll container for page content */
   padding: 22px 24px;
 }
 
-/* ---- Pages ---- */
-.page { display: none; }
+/* ── Page Containers ─────────────────────────────────────────────
+   Each page is hidden by default. router.js adds/removes
+   the "active" class to show only the current page.
+   ──────────────────────────────────────────────────────────────── */
+.page        { display: none; }
 .page.active { display: block; }
 
-/* ---- Grid helpers ---- */
-.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 18px; }
-.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
-.grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
-.grid-1 { display: grid; gap: 14px; }
+
+/* ================================================================
+   GRID SYSTEM
+   CSS Grid helpers used throughout dashboard and page layouts.
+   Responsive column counts: 4 → 3 → 2 → 1
+   ================================================================ */
+
+/* 4-column grid — stat cards on dashboard */
+.grid-4 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+/* 3-column grid — budget cards, account cards */
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+
+/* 2-column grid — chart + transactions, balance sheet columns */
+.grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
+
+/* 1-column grid — stacked layout */
+.grid-1 {
+  display: grid;
+  gap: 14px;
+}

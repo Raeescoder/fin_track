@@ -1,82 +1,141 @@
-/* ============================================
-   base.css — CSS Variables, Reset, Typography
+/* ================================================================
+   base.css — CSS Variables, Reset & Typography
    FinTrack AI Finance Suite
-   ============================================ */
+   ================================================================
+   This file is the foundation of the design system.
+   Load this FIRST before any other stylesheet.
 
-*,*::before,*::after { margin:0; padding:0; box-sizing:border-box; }
+   Contents:
+   1. CSS Custom Properties (design tokens)
+   2. Box-sizing & reset
+   3. Base html/body styles
+   4. Custom scrollbar
+   5. Color utility classes
+   6. Spacing & layout utilities
+   ================================================================ */
 
+
+/* ── 1. CSS Custom Properties (Design Tokens) ────────────────────
+   All colors, radii, and fonts are defined here as variables.
+   Change a variable here and it updates everywhere in the app.
+   ──────────────────────────────────────────────────────────────── */
 :root {
-  /* Background layers */
-  --bg:    #0A0E1A;
-  --bg2:   #111827;
-  --bg3:   #1a2233;
-  --bg4:   #1e2a40;
+  /* Background layers — darkest to lightest */
+  --bg:    #0A0E1A;   /* App background (deepest) */
+  --bg2:   #111827;   /* Sidebar & topbar */
+  --bg3:   #1a2233;   /* Input fields, secondary surfaces */
+  --bg4:   #1e2a40;   /* Hover states, table row hover */
 
-  /* Brand colors */
-  --accent:  #3B82F6;
-  --success: #10B981;
-  --warn:    #F59E0B;
-  --danger:  #EF4444;
-  --purple:  #8B5CF6;
-  --gold:    #F59E0B;
-  --gold2:   #FCD34D;
+  /* Brand / semantic colors */
+  --accent:  #3B82F6;   /* Primary blue — buttons, links, active nav */
+  --success: #10B981;   /* Green — income, positive changes */
+  --warn:    #F59E0B;   /* Amber — warnings, budget alerts */
+  --danger:  #EF4444;   /* Red — expenses, errors, high usage */
+  --purple:  #8B5CF6;   /* Purple — AI features, investments */
+  --gold:    #F59E0B;   /* Gold — Pro badge, premium features */
+  --gold2:   #FCD34D;   /* Light gold — Pro plan text */
 
-  /* Text */
-  --text:  #F1F5F9;
-  --text2: #94A3B8;
-  --text3: #64748B;
+  /* Text hierarchy */
+  --text:  #F1F5F9;   /* Primary text — headings, values */
+  --text2: #94A3B8;   /* Secondary text — labels, descriptions */
+  --text3: #64748B;   /* Tertiary text — timestamps, placeholders */
 
-  /* Borders */
-  --border:  #1e2a40;
-  --border2: #2d3a52;
+  /* Border colors */
+  --border:  #1e2a40;   /* Default card/section borders */
+  --border2: #2d3a52;   /* Input borders, modal borders */
 
-  /* Cards */
-  --card:  #111827;
-  --card2: #1a2233;
+  /* Card backgrounds */
+  --card:  #111827;   /* Default card background */
+  --card2: #1a2233;   /* Alternate card (slightly lighter) */
 
-  /* Radius */
-  --r:  12px;
-  --r2:  8px;
-  --r3:  6px;
+  /* Border radius scale */
+  --r:  12px;   /* Cards, modals */
+  --r2:  8px;   /* Inputs, small cards */
+  --r3:  6px;   /* Nav items, tags */
 
-  /* Font */
+  /* Font stack — system fonts for zero loading time */
   --font: 'Segoe UI', system-ui, -apple-system, sans-serif;
 }
 
+
+/* ── 2. Box-sizing Reset ─────────────────────────────────────────
+   Apply border-box to ALL elements so padding/border
+   are included in width/height calculations.
+   ──────────────────────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+
+/* ── 3. Base html/body Styles ────────────────────────────────────
+   Full-height dark canvas with no overflow (SPA — no scrolling
+   on body; individual panels scroll internally).
+   ──────────────────────────────────────────────────────────────── */
 html, body {
   height: 100%;
   font-family: var(--font);
   background: var(--bg);
   color: var(--text);
-  overflow: hidden;
+  overflow: hidden;           /* Prevent body scroll; content areas scroll */
   font-size: 14px;
   line-height: 1.5;
-  -webkit-font-smoothing: antialiased;
+  -webkit-font-smoothing: antialiased;   /* Smoother fonts on Mac/iOS */
 }
 
-/* Scrollbar */
-::-webkit-scrollbar { width: 4px; height: 4px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
 
-/* Color helpers */
-.green  { color: var(--success); }
-.red    { color: var(--danger);  }
-.amber  { color: var(--warn);    }
-.blue   { color: var(--accent);  }
-.purple { color: var(--purple);  }
-.gold   { color: var(--gold);    }
+/* ── 4. Custom Scrollbar ─────────────────────────────────────────
+   Thin, subtle scrollbar that matches the dark theme.
+   Only visible in WebKit browsers (Chrome, Safari, Edge).
+   ──────────────────────────────────────────────────────────────── */
+::-webkit-scrollbar        { width: 4px; height: 4px; }
+::-webkit-scrollbar-track  { background: transparent; }
+::-webkit-scrollbar-thumb  { background: var(--border2); border-radius: 2px; }
 
-/* Utility */
-.flex   { display: flex; }
-.ic     { align-items: center; }
-.jb     { justify-content: space-between; }
-.gap2   { gap: 8px; }
-.gap3   { gap: 12px; }
-.mb14   { margin-bottom: 14px; }
-.mt14   { margin-top: 14px; }
+
+/* ── 5. Color Utility Classes ────────────────────────────────────
+   Apply semantic colors to inline text.
+   Usage: <span class="green">+$200</span>
+   ──────────────────────────────────────────────────────────────── */
+.green  { color: var(--success); }   /* Positive values, income */
+.red    { color: var(--danger);  }   /* Negative values, expenses */
+.amber  { color: var(--warn);    }   /* Warnings */
+.blue   { color: var(--accent);  }   /* Info, links */
+.purple { color: var(--purple);  }   /* AI, investments */
+.gold   { color: var(--gold);    }   /* Pro features */
+
+
+/* ── 6. Spacing, Layout & Typography Utilities ───────────────────
+   Minimal utility classes to avoid repetition in page HTML.
+   ──────────────────────────────────────────────────────────────── */
+
+/* Flexbox helpers */
+.flex { display: flex; }
+.ic   { align-items: center; }          /* items-center */
+.jb   { justify-content: space-between; }
+
+/* Gap helpers */
+.gap2 { gap: 8px; }
+.gap3 { gap: 12px; }
+
+/* Margin helpers */
+.mb14 { margin-bottom: 14px; }
+.mt14 { margin-top: 14px; }
+
+/* Blank vertical spacer between sections */
 .spacer { height: 14px; }
-.tr     { text-align: right; }
-.subtitle { font-size: 12px; color: var(--text3); margin-top: 3px; }
+
+/* Text alignment */
+.tr { text-align: right; }
+
+/* Descriptive sub-text below headings */
+.subtitle  { font-size: 12px; color: var(--text3); margin-top: 3px; }
+
+/* Section heading inside a card */
 .sec-title { font-size: 15px; font-weight: 600; margin-bottom: 14px; }
+
+/* Horizontal rule / divider line */
 .div { height: 1px; background: var(--border); margin: 16px 0; }

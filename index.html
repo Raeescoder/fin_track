@@ -1,19 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FinTrack — AI Finance Suite</title>
-<link rel="stylesheet" href="css/base.css">
-<link rel="stylesheet" href="css/layout.css">
-<link rel="stylesheet" href="css/components.css">
-<link rel="stylesheet" href="css/pages.css">
+  <!-- ============================================================
+       FinTrack — AI Finance Suite
+       index.html  |  Main Entry Point
+       ============================================================
+       This is the single HTML shell for the entire app.
+       All pages are rendered dynamically by JavaScript —
+       no page reloads happen after initial load (SPA pattern).
+       ============================================================ -->
+
+  <meta charset="UTF-8">
+  <!-- Responsive viewport for all screen sizes -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FinTrack — AI Finance Suite</title>
+
+  <!-- ── Stylesheets (load order matters) ───────────────────────
+       1. base.css       → CSS variables, reset, typography
+       2. layout.css     → App shell, sidebar, topbar, grid
+       3. components.css → Reusable UI: cards, buttons, forms, etc.
+       4. pages.css      → Page-specific styles
+       ──────────────────────────────────────────────────────────── -->
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/pages.css">
 </head>
 <body>
+
+<!-- ── App Root ──────────────────────────────────────────────────
+     .app uses flexbox: sidebar (fixed width) + main (flex-1)
+     ──────────────────────────────────────────────────────────── -->
 <div class="app">
 
-  <!-- SIDEBAR -->
+  <!-- ═══════════════════════════════════════════════════════════
+       SIDEBAR NAVIGATION
+       Contains: logo, nav links grouped by section, user info
+       ═══════════════════════════════════════════════════════════ -->
   <aside class="sidebar">
+
+    <!-- App Logo -->
     <div class="logo">
       <div class="logo-icon">₿</div>
       <div>
@@ -21,19 +47,51 @@
         <div class="logo-sub">AI Finance Suite</div>
       </div>
     </div>
+
+    <!-- Navigation Menu
+         Each nav-item calls go(pageId, element) from router.js
+         Badges: .nbadge = blue | .nbadge.gold = Pro | .nbadge.ai = AI -->
     <nav>
+      <!-- Free pages -->
       <div class="nav-section">Overview</div>
-      <div class="nav-item active" onclick="go('dashboard',this)"><span class="ni">📊</span> Dashboard</div>
-      <div class="nav-item" onclick="go('transactions',this)"><span class="ni">💳</span> Transactions</div>
-      <div class="nav-item" onclick="go('budgets',this)"><span class="ni">🎯</span> Budgets</div>
-      <div class="nav-item" onclick="go('accounts',this)"><span class="ni">🏦</span> Accounts</div>
+      <div class="nav-item active" onclick="go('dashboard',this)">
+        <span class="ni">📊</span> Dashboard
+      </div>
+      <div class="nav-item" onclick="go('transactions',this)">
+        <span class="ni">💳</span> Transactions
+      </div>
+      <div class="nav-item" onclick="go('budgets',this)">
+        <span class="ni">🎯</span> Budgets
+      </div>
+      <div class="nav-item" onclick="go('accounts',this)">
+        <span class="ni">🏦</span> Accounts
+      </div>
+
+      <!-- Premium & AI pages (gated behind Pro plan) -->
       <div class="nav-section">AI &amp; Premium</div>
-      <div class="nav-item" onclick="go('ai',this)"><span class="ni">🤖</span> AI Advisor <span class="nbadge ai">AI</span></div>
-      <div class="nav-item" onclick="go('balancesheet',this)"><span class="ni">📋</span> Balance Sheet <span class="nbadge gold">PRO</span></div>
-      <div class="nav-item" onclick="go('reports',this)"><span class="ni">📈</span> Reports <span class="nbadge gold">PRO</span></div>
+      <div class="nav-item" onclick="go('ai',this)">
+        <span class="ni">🤖</span> AI Advisor
+        <span class="nbadge ai">AI</span>
+      </div>
+      <div class="nav-item" onclick="go('balancesheet',this)">
+        <span class="ni">📋</span> Balance Sheet
+        <span class="nbadge gold">PRO</span>
+      </div>
+      <div class="nav-item" onclick="go('reports',this)">
+        <span class="ni">📈</span> Reports
+        <span class="nbadge gold">PRO</span>
+      </div>
+
+      <!-- Admin-only section -->
       <div class="nav-section">Administration</div>
-      <div class="nav-item" onclick="go('admin',this)"><span class="ni">⚙️</span> Admin Panel <span class="nbadge">ADMIN</span></div>
+      <div class="nav-item" onclick="go('admin',this)">
+        <span class="ni">⚙️</span> Admin Panel
+        <span class="nbadge">ADMIN</span>
+      </div>
     </nav>
+
+    <!-- Current User Info (bottom of sidebar)
+         plan-label text is updated by modals.js on Pro upgrade -->
     <div class="sidebar-user">
       <div class="u-avatar">JD</div>
       <div>
@@ -42,19 +100,35 @@
       </div>
     </div>
   </aside>
+  <!-- /SIDEBAR -->
 
-  <!-- MAIN -->
+  <!-- ═══════════════════════════════════════════════════════════
+       MAIN CONTENT AREA
+       Contains: topbar (title + actions) + content (pages)
+       ═══════════════════════════════════════════════════════════ -->
   <main class="main">
+
+    <!-- Top Bar: page title, plan badge, action buttons -->
     <div class="topbar">
+      <!-- Updated by router.js on every page change -->
       <h1 id="page-title">Dashboard</h1>
+
+      <!-- Shown on free plan; hidden after Pro upgrade -->
       <span id="free-badge" class="tbadge">⭐ Free Plan — Upgrade for full access</span>
+
+      <!-- Global quick-add button (opens Add Transaction modal) -->
       <button class="btn btn-ghost" onclick="openM('addTx')">+ Add Transaction</button>
+
+      <!-- Opens the Pro upgrade / payment modal -->
       <button class="btn btn-gold" onclick="openM('upgrade')">⚡ Upgrade to Pro</button>
     </div>
 
+    <!-- Page Container
+         Each .page div starts empty; JS renders HTML into it
+         when the user navigates to that page (lazy rendering).
+         Only one .page has class "active" at a time. -->
     <div class="content">
-      <!-- Pages injected by JS -->
-      <div id="page-dashboard"  class="page active"></div>
+      <div id="page-dashboard"    class="page active"></div>  <!-- Default page -->
       <div id="page-transactions" class="page"></div>
       <div id="page-budgets"      class="page"></div>
       <div id="page-accounts"     class="page"></div>
@@ -64,15 +138,33 @@
       <div id="page-admin"        class="page"></div>
     </div>
   </main>
-</div>
+  <!-- /MAIN -->
 
-<!-- Modals -->
+</div>
+<!-- /App Root -->
+
+<!-- ── Modal Root ────────────────────────────────────────────────
+     modals.js injects all modal HTML here on DOMContentLoaded
+     ──────────────────────────────────────────────────────────── -->
 <div id="modals-root"></div>
 
-<!-- Toast -->
-<div class="toast" id="toast"><span id="t-icon"></span><span id="t-msg"></span></div>
+<!-- ── Toast Notification ────────────────────────────────────────
+     utils.js controls show/hide via .toast.show class
+     #t-icon = emoji  |  #t-msg = message text
+     ──────────────────────────────────────────────────────────── -->
+<div class="toast" id="toast">
+  <span id="t-icon"></span>
+  <span id="t-msg"></span>
+</div>
 
-<!-- Scripts -->
+<!-- ── Scripts (load order is critical) ──────────────────────────
+     1. data.js       → AppState must exist before anything else
+     2. utils.js      → Helpers used by all other scripts
+     3. router.js     → go() used by nav items and page scripts
+     4. modals.js     → Needs data + utils; builds modal DOM
+     5. pages/*.js    → Each page renderer (order doesn't matter)
+     6. app.js        → Bootstrap; runs last after everything loads
+     ──────────────────────────────────────────────────────────── -->
 <script src="js/data.js"></script>
 <script src="js/utils.js"></script>
 <script src="js/router.js"></script>
@@ -86,5 +178,6 @@
 <script src="pages/reports.js"></script>
 <script src="pages/admin.js"></script>
 <script src="js/app.js"></script>
+
 </body>
 </html>
